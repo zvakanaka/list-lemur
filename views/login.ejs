@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Login</title>
+    <% if (process.env.SUB_APP && process.env.OUTER_APP_DIR) {%>
+      <%- include(process.env.OUTER_APP_DIR+'/views/partials/head') %>
+    <% } else { %>
+      <% include partials/head %>
+    <% } %>
+    <link rel="stylesheet" href="css/login.css">
+    <script src="/js/load-sw.js"></script>
+  </head>
+  <body>
+    <% if (process.env.SUB_APP && process.env.OUTER_APP_DIR) {%>
+      <%- include(process.env.OUTER_APP_DIR+'/views/partials/loginNav') %>
+    <% } else { %>
+      <% include partials/loginNav %>
+    <% } %>
+    <div class="cover-all">
+      <a href="/auth/google">
+        <img class="auth-image" src="/images/btn_google_signin.png" alt="Sign in with Google">
+      </a>
+    </div>
+    <% if (process.env.SUB_APP && process.env.OUTER_APP_DIR) {%>
+      <%- include(process.env.OUTER_APP_DIR+'/views/partials/footer') %>
+    <% } else { %>
+      <% include partials/footer %>
+    <% } %>
+  </body>
+</html>

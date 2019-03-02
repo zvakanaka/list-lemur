@@ -1,0 +1,22 @@
+{
+  "name": "List Lemur",
+  "short_name": "List Lemur",
+  "icons": [
+    {
+      "src": "images/icon_32x32.png",
+      "sizes": "36x36",
+      "type": "image/png",
+      "density": 0.75
+    },
+    {
+      "src": "images/icon_144x144.png",
+      "sizes": "144x144",
+      "type": "image/png",
+      "density": 1.0
+    }
+  ],
+  "theme_color": "#000",
+  "background_color": "#000",
+  "display": "standalone",
+  "start_url": "/"
+}

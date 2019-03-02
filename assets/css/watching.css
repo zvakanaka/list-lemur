@@ -1,0 +1,95 @@
+main {
+  margin-top: calc(58.5px + 1.25em);
+}
+.watch {
+  border: 1px solid black;
+  padding: 1em;
+  border-radius: 10px;
+  background: #fff;
+  margin-bottom: 1.25em;
+  width: 80%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.watch > .url {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 75%;
+}
+.edit {
+  border-radius: 5px;
+  border: 1px solid black;
+  padding: .5em .75em;
+  background: #fff;
+}
+button:not([disabled]):hover {
+  filter: invert(100%);
+}
+body {
+  background: #eee;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0;
+  font-family: verdana;
+  height: unset;
+}
+
+.modal__container {
+  height: 100vh;
+  width: 100vw;
+  position: absolute;
+  background: #22222274;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+.modal__body {
+  height: 80vh;
+  min-width: 350px;
+  background: white;
+  border-radius: 10px;
+  border: 1px solid black;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 1.25em;
+}
+
+.edit-row__container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow-y: auto;
+}
+.edit-row {
+  width: 80%;
+}
+.edit-row > span:nth-child(2) {
+  width: 75%;
+}
+.edit-row > span:nth-child(2) > input {
+  width: 100%;
+}
+
+.buttons__container {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  height: 4em;
+}
+.buttons__container > button {
+  border: 1px solid black;
+  border-radius: 10px;
+  background: white;
+  padding: 0 3ch;
+  margin:1em 1em;
+}
+.loading {
+  align-self: center;
+}

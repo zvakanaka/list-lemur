@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Watching</title>
+  <% if (process.env.SUB_APP && process.env.OUTER_APP_DIR) {%>
+    <%- include(process.env.OUTER_APP_DIR+'/views/partials/head') %>
+  <% } else { %>
+    <% include partials/head %>
+  <% } %>
+  <link rel="stylesheet" href="css/watching.css">
+</head>
+  <body>
+    <% if (process.env.SUB_APP && process.env.OUTER_APP_DIR) {%>
+      <%- include(process.env.OUTER_APP_DIR+'/views/partials/nav') %>
+    <% } else { %>
+      <% include partials/nav %>
+    <% } %>
+    <main class="cover-all">
+      <div class="messages">
+        <% if (userWatches.length === 0) {%>
+          <div class="messages__no-watches">
+            You are not watching anything yet
+          </div>
+        <% } %>
+      </div>
+      <% userWatches.forEach(watch => {%>
+        <div class="watch" data-json='<%- JSON.stringify({
+          watchName: watch.watchName,
+          url: watch.url,
+          unwantedWords: watch.unwantedWords,
+          requiredWords: watch.requiredWords,
+          creationDate: watch.creationDate,
+          archived: watch.archived,
+          id: watch.id
+        }) %>'>
+          <span class="url">
+            <% if (watch.archived) {%>
+              <del>
+            <% } %>
+                <a href="<%- watch.url %>" target="_blank"><%- watch.watchName %></a>
+            <% if (watch.archived) {%>
+                </del>
+            <% } %>
+          </span>
+          <button class="edit">Edit</button>
+        </div>
+      <% }) %>
+    </main>
+
+    <div class="hidden modal__container">
+      <div class="modal__body">
+        <div class="edit-row__container">
+
+        </div>
+        <div class="buttons__container">
+          <button class="archive">Archive</button>
+          <span class="invisible loading"></span>
+          <button class="save">Save</button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+    const userWatches = <%- JSON.stringify(userWatches, null, 2) %>;
+    </script>
+    <script src="/js/network.js"></script>
+    <!-- <script src="/js/message.js"></script> -->
+    <script src="/js/keys.js"></script>
+    <script src="/js/watching.js"></script>
+    <% if (process.env.SUB_APP && process.env.OUTER_APP_DIR) {%>
+      <%- include(process.env.OUTER_APP_DIR+'/views/partials/footer') %>
+    <% } else { %>
+      <% include partials/footer %>
+    <% } %>
+  </body>
+</html>
