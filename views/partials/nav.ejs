@@ -1,0 +1,8 @@
+<header>
+  <% if (page === '/paste-link') {%>
+    <span><a href="./watching">Watching</a></span>
+  <% } else { %>
+    <span><a href="./paste-link">Add</a></span>
+  <% } %>
+  <span><a href="./settings"><%= user.displayName %></a></span>
+</header>

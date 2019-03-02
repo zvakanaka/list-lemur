@@ -1,0 +1,30 @@
+.omnibox-container {
+  display: flex;
+  width: 80%;
+  --omnibox-border-radius: 15px;
+}
+.paste-link-here__input {
+  height: 2em;
+  width: 100%;
+  font-size: 2em;
+  border-radius: var(--omnibox-border-radius, 10px) 0 0 var(--omnibox-border-radius, 10px);
+  padding: 0 1ch;
+  border: 1px solid black;
+  border-right: none;
+}
+.paste-link-here__button {
+  font-size: 2em;
+  border-radius: 0 var(--omnibox-border-radius, 10px) var(--omnibox-border-radius, 10px) 0;
+  padding: 0;
+  background: white;
+  border: 1px solid black;
+}
+
+.lemur {
+  color: orange;
+  width: 4ch;
+  background: black;
+  font-family: monospace;
+  border-right: 1ch solid white;
+  border-left: 1ch solid white;
+}

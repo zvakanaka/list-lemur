@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Lemur | Paste Link</title>
+    <% if (process.env.SUB_APP && process.env.OUTER_APP_DIR) {%>
+      <%- include(process.env.OUTER_APP_DIR+'/views/partials/head') %>
+    <% } else { %>
+      <% include partials/head %>
+    <% } %>
+    <link rel="stylesheet" href="css/paste.css">
+  </head>
+  <body>
+    <% if (process.env.SUB_APP && process.env.OUTER_APP_DIR) {%>
+      <%- include(process.env.OUTER_APP_DIR+'/views/partials/nav') %>
+    <% } else { %>
+      <% include partials/nav %>
+    <% } %>
+    <div class="cover-all">
+      <div class="messages">
+
+      </div>
+
+      <div class="omnibox-container">
+        <input class="paste-link-here__input" type="text" placeholder="Paste a link">
+        <button class="paste-link-here__button">
+          <div class="lemur">
+            <span>o</span>
+            <span>o</span>
+          </div>
+        </button>
+      </div>
+    </div>
+    <% if (process.env.SUB_APP && process.env.OUTER_APP_DIR) {%>
+      <%- include(process.env.OUTER_APP_DIR+'/views/partials/footer') %>
+    <% } else { %>
+      <% include partials/footer %>
+    <% } %>
+    <script src="/js/network.js"></script>
+    <script src="/js/message.js"></script>
+    <script src="/js/keys.js"></script>
+    <script src="/js/paste.js"></script>
+  </body>
+</html>

@@ -1,0 +1,46 @@
+.form-container {
+  display: flex;
+  width: 80%;
+  justify-content: space-around;
+  font-family: verdana;
+}
+.form-container select, .form-container input, .form-container label {
+  color: black;
+  background-color: white;
+  font-weight: 500;
+  font-size: 120%;
+  line-height: 120%;
+}
+.form-container select, .form-container input {
+  border: 0;
+  border-bottom: 1px solid black;
+  color: black;
+  background-color: white;
+  font-weight: 500;
+  outline: 0;
+  font-size: 120%;
+  line-height: 120%;
+  width: 13em;
+  margin-bottom: .5em;
+}
+.send-code__button, .verify-code__button {
+  margin-top: 1em;
+  margin-bottom: 1em;
+  font-size: 1.5em;
+  border-radius: 10px;
+  color: black;
+  padding: 8px 8px;
+  background: limegreen;
+  font-family: monospace;
+  border: 1px solid black;
+}
+
+.button__reset-email {
+  border-radius: 5px;
+  border: 1px solid black;
+  padding: .5em .75em;
+  background: #fff;
+}
+button:not([disabled]):hover {
+  filter: invert(100%);
+}

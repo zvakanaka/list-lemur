@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Settings</title>
+    <% if (process.env.SUB_APP && process.env.OUTER_APP_DIR) {%>
+      <%- include(process.env.OUTER_APP_DIR+'/views/partials/head') %>
+    <% } else { %>
+      <% include partials/head %>
+    <% } %>
+    <link rel="stylesheet" href="css/settings.css">
+  </head>
+  <body>
+    <% if (process.env.SUB_APP && process.env.OUTER_APP_DIR) {%>
+      <%- include(process.env.OUTER_APP_DIR+'/views/partials/nav') %>
+    <% } else { %>
+      <% include partials/nav %>
+    <% } %>
+
+    <main class="cover-all">
+      <div class="messages">
+        <% if (!email) {%>
+          <div class="messages__must-set-email">
+            We need your email/phone so you can get notifications when a list you are watching is updated
+          </div>
+        <% } %>
+      </div>
+
+      <% if (email) {%>
+      <div class="form-container">
+        <div>
+          <label for="phone-or-email__display">Phone/email:</label>
+          <span class="phone-or-email__display" id="phone-or-email__display"><%= email %></span>
+          <button type="button" class="button__reset-email">Reset</button>
+        </div>
+      </div>
+      <% } else { %>
+    <div class="form-container">
+      <div>
+        <label for="phone-or-email">Phone/email:</label>
+        <input class="phone-or-email__input" id="phone-or-email" />
+      </div>
+
+       <div class="form-group">
+         <label for="select-carrier">Carrier:</label>
+         <select class="select-carrier__select form-control" id="select-carrier">
+           <option value="">None (email)</option>
+           <option value="@txt.att.net">AT&T</option>
+           <option value="@myboostmobile.com">Boost Mobile</option>
+           <option value="@mms.mycricket.com">Cricket</option>
+           <option value="@mymetropcs.com">MetroPCS</option>
+           <option value="@text.republicwireless.com">Republic Wireless</option>
+           <option value="@messaging.sprintpcs.com">Sprint</option>
+           <option value="@tmomail.net">T-Mobile</option>
+           <option value="@vtext.com">Verizon</option>
+           <option value="@vmobl.com">Virgin</option>
+         </select>
+       </div>
+       </div>
+
+       <button class="send-code__button">Send Verification Code</button>
+
+       <div class="verification-code__container invisible">
+
+         <div class="form-container">
+           <label for="verification-code">Verification Code:</label>
+           <input class="verification-code__input" id="verification-code" />
+         </div>
+         <button class="verify-code__button">Verify Code</button>
+
+       </div>
+       <% } %>
+
+     </div>
+
+   </main>
+    <% if (process.env.SUB_APP && process.env.OUTER_APP_DIR) {%>
+      <%- include(process.env.OUTER_APP_DIR+'/views/partials/footer') %>
+    <% } else { %>
+      <% include partials/footer %>
+    <% } %>
+    <script src="/js/network.js"></script>
+    <script src="/js/message.js"></script>
+    <script src="/js/keys.js"></script>
+    <% if (!email) {%>
+        <script src="/js/settings-no-verified-email.js"></script>
+      <% } else { %>
+        <script src="/js/settings-verified-email.js"></script>
+    <% } %>
+  </body>
+</html>
