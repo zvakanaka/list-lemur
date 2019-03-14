@@ -8,7 +8,7 @@
   width: 100%;
   font-size: 2em;
   border-radius: var(--omnibox-border-radius, 10px) 0 0 var(--omnibox-border-radius, 10px);
-  padding: 0 1ch;
+  padding: 0 .4ch;
   border: 1px solid black;
   border-right: none;
 }
