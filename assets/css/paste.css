@@ -6,7 +6,7 @@
 .paste-link-here__input {
   height: 2em;
   width: 100%;
-  font-size: 2em;
+  font-size: 1.8em;
   border-radius: var(--omnibox-border-radius, 10px) 0 0 var(--omnibox-border-radius, 10px);
   padding: 0 .4ch;
   border: 1px solid black;
