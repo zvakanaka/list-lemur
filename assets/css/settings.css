@@ -1,7 +1,7 @@
 .form-container {
   display: flex;
-  width: 80%;
-  justify-content: space-around;
+  justify-content: center;
+  flex-direction: column;
   font-family: verdana;
 }
 .form-container select, .form-container input, .form-container label {
