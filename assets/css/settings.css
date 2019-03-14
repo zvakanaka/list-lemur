@@ -20,7 +20,7 @@
   outline: 0;
   font-size: 120%;
   line-height: 120%;
-  width: 13em;
+  /* width: 13em; */
   margin-bottom: .5em;
 }
 .send-code__button, .verify-code__button {

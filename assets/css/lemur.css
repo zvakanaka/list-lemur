@@ -54,10 +54,11 @@ header a:hover, footer a:hover {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  margin: 0 1em;
 }
 .messages {
-  position: absolute;
-  top: 5em;
+  /* position: absolute;
+  top: 5em; */
   width: 80%;
 }
 .messages > * {
