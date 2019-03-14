@@ -27,8 +27,7 @@ function refreshModal(watch) {
     url: {name: 'URL'},
     // unwantedWords: {name: 'Unwanted Words'},
     // requiredWords: {name: 'Required Words'},
-    creationDate: {name: 'Creation Date', readOnly: true, conversionFunc: getShortDate}
-    // archived: {name: 'Archived'}
+    creationDate: {name: 'Created', readOnly: true, conversionFunc: getShortDate}
   };
   Array.from(modalBody.querySelectorAll('.edit-row')).forEach(row => row.remove());
   Object.entries(watch)
