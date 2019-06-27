@@ -10,7 +10,7 @@ function enterKey(focusEl, buttonEl, callback) {
       });
     });
   });
-  ['touchend', 'click'].forEach(evName => {
+  ['click'].forEach(evName => {
     buttonEl.addEventListener(evName, (ev) => {
       callback();
     });
