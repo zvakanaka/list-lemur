@@ -9,7 +9,7 @@ npm install
 ```js
 [
   {
-    "prefix": "https://news.ycombinator.com/news",
+    "prefix": "https://news.ycombinator.com/",
     "selectors": {
       "listing": ".athing",
       "title": ".storylink",
