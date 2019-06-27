@@ -9,5 +9,7 @@ npm-debug.log
 *.crt
 *.csr
 *.ca-bundle
+*.pem
+certbot-auto
 db.json
 presetStripes.json
