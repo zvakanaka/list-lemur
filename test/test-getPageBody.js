@@ -7,14 +7,15 @@ const BASE_URL = 'http://localhost:7777';
 const TEST_PAGE_1 = 'site-list.html';
 const TEST_PAGE_2 = 'site-list-single.html';
 const TEST_PAGE_3 = 'site-list-none.html';
+const TEST_PAGE_4 = 'site-list-several-js.html';
 
 // sendMail
 describe('Getting page body', function() {
   it('should handle multiple JavaScript URLs', function(done) {
-    const urls = [`${BASE_URL}/${TEST_PAGE_2}`, `${BASE_URL}/${TEST_PAGE_1}`];
+    const urls = [`${BASE_URL}/${TEST_PAGE_2}`, `${BASE_URL}/${TEST_PAGE_1}`, `${BASE_URL}/${TEST_PAGE_4}`];
     const options = urls.map((url, i) => ({url, i}));
     bodySnatcher.getPagesJavaScript(options).then(bodies => {
-      Number(bodies.length).should.equal(2);
+      Number(bodies.length).should.equal(urls.length);
       done();
     }).catch(e => {
       console.error(e);

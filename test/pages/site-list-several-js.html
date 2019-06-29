@@ -1,0 +1,17 @@
+<main>
+  <ul>
+    <!-- DYNAMIC CONTENT INSERTED HERE  -->
+  </ul>
+</main>
+<script>
+const ul = document.querySelector('main ul');
+const ioPages = ['mere-blog', 'vidslicer', 'console-log', 'color-cat'];
+ioPages.forEach(page => {
+  const li = document.createElement('li');
+  const a = document.createElement('a');
+  a.href = `https://zvakanaka.github.io/${page}`;
+  a.textContent = `${page}`;
+  li.appendChild(a);
+  ul.appendChild(li);
+});
+</script>

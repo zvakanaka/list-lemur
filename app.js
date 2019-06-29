@@ -89,6 +89,7 @@ app.use(middleware);
 app.get('/watching', whoIsThere, async function(req, res){
   const userId = model.getUserId(req.user.id);
   const userWatches = modelHelpers.getAllWatchesForUser(userId);
+  // modelHelpers.popItems(userId);
   res.render('watching', {
             page: process.env.SUB_APP ? req.url : req.url, // url
             user: req.user,
