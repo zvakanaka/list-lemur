@@ -25,7 +25,7 @@ npm install
 ### Environment Variables (`.env`)
 *Set up the following to have what you need to make a `.env` file:*
 1. [Google OAuth](https://console.developers.google.com/apis/credentials/oauthclient) (Callback URL of http://127.0.0.1:1234/auth/google/callback will work for localhost)
-2. An email that is [allowed to send mail from less secure apps](https://support.google.com/accounts/answer/6010255?hl=en)
+2. A Gmail that is [allowed to send mail from less secure apps](https://support.google.com/accounts/answer/6010255?hl=en)
 
 ```sh
 PORT=1234
