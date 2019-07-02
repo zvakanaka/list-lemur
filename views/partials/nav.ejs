@@ -1,8 +1,8 @@
 <header>
   <% if (page === '/paste-link') {%>
-    <span><a href="./watching">Watching</a></span>
+    <a href="./watching">Watching</a>
   <% } else { %>
-    <span><a href="./paste-link">Add</a></span>
+    <a href="./paste-link">Add</a>
   <% } %>
-  <span><a href="./settings"><%= user.displayName %></a></span>
+  <a href="./settings"><%= user.displayName %></a>
 </header>
