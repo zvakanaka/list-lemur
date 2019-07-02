@@ -14,13 +14,15 @@ body {
 }
 
 header, footer {
+  --footer-height: 3.5em;
+  --header-height: var(--footer-height);
   position: fixed;
   top: 0;
+  left: 0;
   width: 100%;
-  padding-bottom: .25em;
   color: white;
   background: black;
-  height: 3.5em;
+  height: var(--header-height);
   font-family: monospace;
   display: flex;
   justify-content: space-between;
@@ -35,13 +37,14 @@ header > *:last-child, footer > *:last-child {
   padding-right: 2ch;
 }
 
-header a, footer a {
-/*   filter: invert(90%); */
+header > a, footer > a {
+  height: 100%;
+  display: flex;
+  align-items: center;
   color: #ffa;
   text-decoration: none;
 }
-
-header a:hover, footer a:hover {
+header > a:hover, footer > a:hover {
   text-decoration: underline;
 }
 

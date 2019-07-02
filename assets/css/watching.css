@@ -12,6 +12,9 @@ main {
   justify-content: space-between;
   align-items: center;
 }
+.watch:last-of-type {
+  margin-bottom: calc(var(--footer-height, 3.5em) + 1.25em);
+}
 .watch > .url {
   white-space: nowrap;
   overflow: hidden;
