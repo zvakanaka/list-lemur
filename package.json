@@ -28,6 +28,7 @@
     "passport": "^0.3.2",
     "passport-google-oauth2": "^0.1.6",
     "puppeteer": "^1.18.1",
+    "sequential-promise-all": "^1.0.2",
     "tinyreq": "^3.2.0"
   },
   "devDependencies": {
