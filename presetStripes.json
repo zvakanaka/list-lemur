@@ -1,0 +1,13 @@
+[
+  {
+    "prefix": "https://news.ycombinator.com/",
+    "selectors": {
+      "listing": ".athing",
+      "title": ".storylink",
+      "link": ".storylink",
+      "description": false,
+      "price": false
+    },
+    "javascript": false
+  }
+]
