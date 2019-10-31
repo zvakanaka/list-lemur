@@ -1,19 +1,20 @@
 const editButtons = document.querySelectorAll('.edit');
-const editModal = document.querySelector('.modal__container');
-const modalBody = editModal.querySelector('.modal__body');
+const editModal = document.querySelector('.modal__container.modal__container--edit');
+const editModalBody = editModal.querySelector('.modal__body');
 const editRowContainer = editModal.querySelector('.edit-row__container');
-const buttonsContainer = editModal.querySelector('.buttons__container');
-const saveButton = buttonsContainer.querySelector('.save');
-const archiveButton = buttonsContainer.querySelector('.archive');
-const loading = buttonsContainer.querySelector('.loading');
+const editButtonsContainer = editModal.querySelector('.buttons__container');
+const saveButton = editButtonsContainer.querySelector('.save');
+const archiveButton = editButtonsContainer.querySelector('.archive');
+const loadingEdit = editButtonsContainer.querySelector('.loading');
+
 
 
 editButtons.forEach(editButton => {
   editButton.addEventListener('click', (e) => {
     editModal.classList.remove('hidden');
 
-    const watch = JSON.parse(e.target.parentElement.dataset.json);
-    refreshModal(watch);
+    const watch = JSON.parse(e.target.parentElement.parentElement.dataset.json);
+    refreshEditModal(watch);
   });
 });
 
@@ -21,7 +22,7 @@ editModal.addEventListener('click', e => {
   if (e.target === editModal) editModal.classList.add('hidden');
 });
 
-function refreshModal(watch) {
+function refreshEditModal(watch) {
   const fieldNameMappings = {
     watchName: {name: 'Name'},
     url: {name: 'URL'},
@@ -29,7 +30,7 @@ function refreshModal(watch) {
     // requiredWords: {name: 'Required Words'},
     creationDate: {name: 'Created', readOnly: true, conversionFunc: getShortDate}
   };
-  Array.from(modalBody.querySelectorAll('.edit-row')).forEach(row => row.remove());
+  Array.from(editModalBody.querySelectorAll('.edit-row')).forEach(row => row.remove());
   Object.entries(watch)
     .filter(([key]) => fieldNameMappings.hasOwnProperty(key))
     .forEach(([key, value]) => {
@@ -54,11 +55,11 @@ function refreshModal(watch) {
       valueSpan.appendChild(valueChild);
       editRowDiv.appendChild(valueSpan);
       editRowContainer.appendChild(editRowDiv);
-      modalBody.dataset.watchId = watch.id;
-      modalBody.dataset.archived = watch.archived ? 'true' : '';
+      editModalBody.dataset.watchId = watch.id;
+      editModalBody.dataset.archived = watch.archived ? 'true' : '';
       archiveButton.textContent = !watch.archived ? 'Archive' : 'Unarchive';
     });
-    const modalInputs = modalBody.querySelectorAll('input[type="text"]');
+    const modalInputs = editModalBody.querySelectorAll('input[type="text"]');
     enterKey(modalInputs, saveButton, updateWatch);
 }
 
@@ -67,29 +68,30 @@ archiveButton.addEventListener('click', e => {
 });
 
 async function updateWatch(archive = false) {
-  const watchId = modalBody.dataset.watchId;
-  const nameEl = modalBody.querySelector('[data-key-name="watchName"]');
+  const watchId = editModalBody.dataset.watchId;
+  const nameEl = editModalBody.querySelector('[data-key-name="watchName"]');
   const watchName = nameEl.nodeName === 'INPUT' ? nameEl.value : nameEl.textContent;
-  const watchUrl = modalBody.querySelector('[data-key-name="url"]').value;
+  const watchUrl = editModalBody.querySelector('[data-key-name="url"]').value;
   const watch = {
     id: watchId,
     name: watchName,
     url: watchUrl,
-    archived: archive ? !modalBody.dataset.archived : modalBody.dataset.archived
+    archived: archive ? !editModalBody.dataset.archived : editModalBody.dataset.archived,
+    deleted: false
   };
   const pressedButton = archive ? archiveButton : saveButton;
   pressedButton.disabled = true;
-  loading.textContent = archive ? 'Archiving...' : 'Saving...';
-  loading.classList.remove('invisible');
+  loadingEdit.textContent = archive ? 'Archiving...' : 'Saving...';
+  loadingEdit.classList.remove('invisible');
   let error = false;
   const response = await fetchPost('/update-watch', watch)
     .catch(e => {
       console.error('Failed to update watch', e);
-      loading.textContent = 'Failed to update watch';
+      loadingEdit.textContent = 'Failed to update watch';
       error = true;
     });
   if (!error) {
-    loading.classList.add('invisible');
+    loadingEdit.classList.add('invisible');
     window.location.reload();
   }
 }
@@ -101,3 +103,32 @@ function getShortDate(epoch) {
   const date = [arr[1], arr[2], arr[0]].join('/');
   return `${time} ${date}`;
 }
+
+
+
+async function deleteWatch(watch, rowEl) {
+  let error = false;
+  const body = {
+    id: watch.id,
+    deleted: true
+  };
+  const response = await fetchPost('/update-watch', body)
+    .catch(e => {
+      console.error('Failed to delete watch', e);
+      alert('Failed to delete watch');
+      error = true;
+    });
+  if (!error) {
+    rowEl.remove();
+  }
+}
+const deleteButtons = document.querySelectorAll('.delete-watch');
+
+deleteButtons.forEach(deleteButton => {
+  deleteButton.addEventListener('click', (e) => {
+    deleteButton.textContent = 'Deleting...';
+    const rowEl = e.target.parentElement.parentElement;
+    const watch = JSON.parse(rowEl.dataset.json);
+    deleteWatch(watch, rowEl);
+  });
+});
