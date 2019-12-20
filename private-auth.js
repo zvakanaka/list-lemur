@@ -8,9 +8,11 @@ var ids = {
   }
 };
 if (process.env.DOMAIN !== '127.0.0.1' && process.env.DOMAIN !== 'localhost') {
-  ids.google.callbackURL = `${process.env.PROTOCOL}://${process.env.DOMAIN}/auth/google/callback`;
+  const callbackRoot = process.env.GOOGLE_AUTH_CALLBACK_ROOT ? process.env.GOOGLE_AUTH_CALLBACK_ROOT : `${process.env.PROTOCOL}://${process.env.DOMAIN}`;
+  ids.google.callbackURL = `${callbackRoot}/auth/google/callback`;
 } else {
-  ids.google.callbackURL = `${process.env.PROTOCOL}://${process.env.DOMAIN}:${port}/auth/google/callback`;
+  const callbackRoot = process.env.GOOGLE_AUTH_CALLBACK_ROOT ? process.env.GOOGLE_AUTH_CALLBACK_ROOT : `${process.env.PROTOCOL}://${process.env.DOMAIN}:${port}`;
+  ids.google.callbackURL = `${callbackRoot}/auth/google/callback`;
 }
 
 module.exports = ids;
