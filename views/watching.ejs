@@ -66,10 +66,10 @@
     <script>
     const userWatches = <%- JSON.stringify(userWatches, null, 2) %>;
     </script>
-    <script src="/js/network.js"></script>
+    <script src="js/network.js"></script>
     <!-- <script src="/js/message.js"></script> -->
-    <script src="/js/keys.js"></script>
-    <script src="/js/watching.js"></script>
+    <script src="js/keys.js"></script>
+    <script src="js/watching.js"></script>
     <% if (process.env.SUB_APP && process.env.OUTER_APP_DIR) {%>
       <%- include(process.env.OUTER_APP_DIR+'/views/partials/footer') %>
     <% } else { %>
