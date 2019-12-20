@@ -13,3 +13,4 @@ npm-debug.log
 certbot-auto
 db.json
 presetStripes.json
+log/
