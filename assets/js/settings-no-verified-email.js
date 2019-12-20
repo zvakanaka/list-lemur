@@ -1,3 +1,5 @@
+const base = document.head.querySelector('base') ? document.head.querySelector('base').href : '';
+
 const sendCodeButton = document.querySelector('.send-code__button');
 const phoneOrEmailInput = document.querySelector('.phone-or-email__input');
 let codeSentMessageEl = null;
@@ -8,7 +10,7 @@ async function sendCode() {
   const carrierSelect = document.querySelector('.select-carrier__select');
   const email = phoneOrEmailInput.value + carrierSelect.value;
   let error = false;
-  const response = await fetchPost('/send-code', {email})
+  const response = await fetchPost(`${base}/send-code`, {email})
     .catch(e => {
       addMessage(`Failed to send code to ${email}`);
       setTimeout(() => {
@@ -35,7 +37,7 @@ async function verifyCode() {
   const code = verifyCodeInput.value;
   let error = false;
 
-  const response = await fetchPost('/verify-code', {code})
+  const response = await fetchPost(`${base}/verify-code`, {code})
     .catch(e => {
       addMessage(`Failed to verify code: ${code}`);
       error = true;

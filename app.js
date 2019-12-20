@@ -234,7 +234,8 @@ app.get('/auth/google/callback',
   passport.authenticate('google', { failureRedirect: '/' }),
   function(req, res) {
     res.cookie('id', req.user.id, { maxAge: 900000, httpOnly: true });
-    res.redirect('/');
+    const callbackRoot = process.env.GOOGLE_AUTH_CALLBACK_ROOT ? process.env.GOOGLE_AUTH_CALLBACK_ROOT : '/';
+    res.redirect(callbackRoot);
 });
 
 app.get('/logout', function(req, res){

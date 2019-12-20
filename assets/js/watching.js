@@ -7,7 +7,7 @@ const saveButton = editButtonsContainer.querySelector('.save');
 const archiveButton = editButtonsContainer.querySelector('.archive');
 const loadingEdit = editButtonsContainer.querySelector('.loading');
 
-
+const base = document.head.querySelector('base') ? document.head.querySelector('base').href : '';
 
 editButtons.forEach(editButton => {
   editButton.addEventListener('click', (e) => {
@@ -84,7 +84,7 @@ async function updateWatch(archive = false) {
   loadingEdit.textContent = archive ? 'Archiving...' : 'Saving...';
   loadingEdit.classList.remove('invisible');
   let error = false;
-  const response = await fetchPost('/update-watch', watch)
+  const response = await fetchPost(`${base}/update-watch`, watch)
     .catch(e => {
       console.error('Failed to update watch', e);
       loadingEdit.textContent = 'Failed to update watch';
@@ -112,7 +112,7 @@ async function deleteWatch(watch, rowEl) {
     id: watch.id,
     deleted: true
   };
-  const response = await fetchPost('/update-watch', body)
+  const response = await fetchPost(`${base}/update-watch`, body)
     .catch(e => {
       console.error('Failed to delete watch', e);
       alert('Failed to delete watch');
