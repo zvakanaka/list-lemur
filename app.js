@@ -12,6 +12,7 @@ const cookieParser = require('cookie-parser');
 const fs = require('fs');
 const model = require('./lib/db.js');
 const modelHelpers = require('./lib/modelHelpers.js');
+const redirectRoot = process.env.GOOGLE_AUTH_CALLBACK_ROOT ? process.env.GOOGLE_AUTH_CALLBACK_ROOT : '';
 
 /**
  * passport
@@ -124,7 +125,7 @@ app.get('/watch', requireAdmin, async function(req, res) {
 
 app.get('/', function(req, res) {
   debug('GET /');
-  if (req.user) res.redirect('/paste-link');
+  if (req.user) res.redirect(`${redirectRoot}/paste-link`);
   else res.render('login', {
             page: process.env.SUB_APP ? req.url : req.url, // url
             user: {displayName:null} });
@@ -138,7 +139,7 @@ app.get('/account', whoIsThere, function(req, res){
 
 app.get('/paste-link', whoIsThere, async function(req, res){
   const email = model.getVerifiedEmail(model.getUserId(req.user.id));
-  if (!email) res.redirect('/settings');
+  if (!email) res.redirect(`${redirectRoot}/settings`);
   else res.render('paste-link', {
             page: process.env.SUB_APP ? req.url : req.url, // url
             user: req.user
@@ -234,21 +235,20 @@ app.get('/auth/google/callback',
   passport.authenticate('google', { failureRedirect: '/' }),
   function(req, res) {
     res.cookie('id', req.user.id, { maxAge: 900000, httpOnly: true });
-    const callbackRoot = process.env.GOOGLE_AUTH_CALLBACK_ROOT ? process.env.GOOGLE_AUTH_CALLBACK_ROOT : '/';
-    res.redirect(callbackRoot);
+    res.redirect(`${redirectRoot}/`);
 });
 
 app.get('/logout', function(req, res){
   res.clearCookie('id');
   req.logout();
-  res.redirect('/');
+  res.redirect(`${redirectRoot}/`);
 });
 
 // authentication
 function whoIsThere(req, res, next) {
   if (req.isAuthenticated()) { return next(); }
   debug('Not authenticated - redirecting');
-  res.redirect('/auth/google');
+  res.redirect(`${redirectRoot}/auth/google`);
 }
 
 function requireAdmin(req, res, next) {
