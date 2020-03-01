@@ -7,7 +7,7 @@ async function resetEmail() {
   resetEmailButton.disabled = true;
   let error = false;
 
-  const response = await fetchGet(`${base}/reset-email`)
+  const response = await fetchGet(`./reset-email`)
     .catch(e => {
       addMessage('Failed to send reset email');
       error = true;
