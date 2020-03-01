@@ -5,7 +5,7 @@ const lemurInput = document.querySelector('.paste-link-here__input');
 async function addLink() {
   const linkText = document.querySelector('.paste-link-here__input').value;
   let error = false;
-  const response = await fetchPost(`${base}/add-link`, {link: linkText})
+  const response = await fetchPost(`./add-link`, {link: linkText})
     .catch(e => {
       const tidbit = (e === '409') ? 'site not supported' : 'unknown error'
       addMessage(`Failed to watch "${linkText}": ${tidbit}`);
