@@ -49,8 +49,8 @@ describe('Getting page body', function() {
   });
 
   it('should handle single non-JavaScript URL', function(done) {
-    bodySnatcher.getPageBody(`${BASE_URL}/${TEST_PAGE_1}`).then(body => {
-      (typeof body).should.equal('string');
+    bodySnatcher.getPageBody(`${BASE_URL}/${TEST_PAGE_1}`, false).then(obj => {
+      (typeof obj.body).should.equal('string');
       done();
     }).catch(e => {
       console.error(e);
