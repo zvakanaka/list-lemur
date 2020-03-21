@@ -2,7 +2,7 @@
   "name": "list-lemur",
   "version": "1.0.0",
   "description": "Receive SMS/emails when a list on a site changes",
-  "main": "app.js",
+  "main": "index.js",
   "engines": {
     "node": ">=10.0.0",
     "npm": ">=6.2.0"
@@ -21,16 +21,14 @@
     "emailjs": "^2.2.0",
     "express": "^4.13.4",
     "express-session": "^1.14.0",
-    "fs": "0.0.2",
     "jsdom": "^13.2.0",
     "lodash-id": "^0.14.0",
     "lowdb": "^1.0.0",
+    "node-fetch": "^2.6.0",
     "passport": "^0.3.2",
     "passport-google-oauth2": "^0.1.6",
     "puppeteer": "^1.18.1",
-    "sequential-promise-all": "^1.0.2",
-    "tinyreq": "^3.2.0",
-    "zombie": "^6.1.4"
+    "sequential-promise-all": "^1.0.2"
   },
   "devDependencies": {
     "chai": "^3.5.0",
@@ -38,7 +36,7 @@
     "mocha": "^5.2.0"
   },
   "scripts": {
-    "start": "node app.js",
+    "start": "node index.js",
     "test": "mocha || :",
     "postinstall": "bash post-install.sh",
     "web-server": "http-server --silent -p 7777 test/pages &",
