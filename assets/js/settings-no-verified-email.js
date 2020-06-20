@@ -5,12 +5,12 @@ const phoneOrEmailInput = document.querySelector('.phone-or-email__input');
 let codeSentMessageEl = null;
 
 enterKey(phoneOrEmailInput, sendCodeButton, sendCode);
-async function sendCode() {
+async function sendCode () {
   sendCodeButton.disabled = true;
   const carrierSelect = document.querySelector('.select-carrier__select');
   const email = phoneOrEmailInput.value + carrierSelect.value;
   let error = false;
-  const response = await fetchPost(`./send-code`, {email})
+  const response = await fetchPost('./send-code', { email })
     .catch(e => {
       addMessage(`Failed to send code to ${email}`);
       setTimeout(() => {
@@ -32,18 +32,18 @@ async function sendCode() {
 const verifyCodeInput = document.querySelector('.verification-code__input');
 const verifyCodeButton = document.querySelector('.verify-code__button');
 enterKey(verifyCodeInput, verifyCodeButton, verifyCode);
-async function verifyCode() {
+async function verifyCode () {
   verifyCodeButton.disabled = true;
   const code = verifyCodeInput.value;
   let error = false;
 
-  const response = await fetchPost(`./verify-code`, {code})
+  const response = await fetchPost('./verify-code', { code })
     .catch(e => {
       addMessage(`Failed to verify code: ${code}`);
       error = true;
     });
   if (!error) {
-    addMessage(`Code verified`);
+    addMessage('Code verified');
     const verificationCodeContainer = document.querySelector('.verification-code__container');
     verificationCodeContainer.classList.add('invisible');
     setTimeout(() => {

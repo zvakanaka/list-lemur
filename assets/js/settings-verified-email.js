@@ -3,11 +3,11 @@ const base = document.head.querySelector('base') ? document.head.querySelector('
 const resetEmailButton = document.querySelector('.button__reset-email');
 
 enterKey(null, resetEmailButton, resetEmail);
-async function resetEmail() {
+async function resetEmail () {
   resetEmailButton.disabled = true;
   let error = false;
 
-  const response = await fetchGet(`./reset-email`)
+  const response = await fetchGet('./reset-email')
     .catch(e => {
       addMessage('Failed to send reset email');
       error = true;

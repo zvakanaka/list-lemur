@@ -2,20 +2,11 @@
 <html>
   <head>
     <title>Settings</title>
-    <% if (process.env.SUB_APP && process.env.OUTER_APP_DIR) {%>
-      <%- include(process.env.OUTER_APP_DIR+'/views/partials/head') %>
-    <% } else { %>
-      <% include partials/head %>
-    <% } %>
+    <%- include('partials/head.ejs') %>
     <link rel="stylesheet" href="css/settings.css">
   </head>
   <body>
-    <% if (process.env.SUB_APP && process.env.OUTER_APP_DIR) {%>
-      <%- include(process.env.OUTER_APP_DIR+'/views/partials/nav') %>
-    <% } else { %>
-      <% include partials/nav %>
-    <% } %>
-
+    <%- include('partials/nav.ejs') %>
     <main class="cover-all">
       <div class="messages">
         <% if (!email) {%>
@@ -73,11 +64,7 @@
      </div>
 
    </main>
-    <% if (process.env.SUB_APP && process.env.OUTER_APP_DIR) {%>
-      <%- include(process.env.OUTER_APP_DIR+'/views/partials/footer') %>
-    <% } else { %>
-      <% include partials/footer %>
-    <% } %>
+    <%- include('partials/footer.ejs') %>
     <script src="js/network.js"></script>
     <script src="js/message.js"></script>
     <script src="js/keys.js"></script>

@@ -1,13 +1,13 @@
-function fetchPost(url, data) {
-  return fetchHelper(url, data, {method: 'POST'});
+function fetchPost (url, data) {
+  return fetchHelper(url, data, { method: 'POST' });
 }
 
-function fetchGet(url, data) {
+function fetchGet (url, data) {
   return fetchHelper(url, data);
 }
 
-function fetchHelper(url, data, args = {}) {
-  return new Promise(async function(resolve, reject) {
+function fetchHelper (url, data, args = {}) {
+  return new Promise(async function (resolve, reject) {
     const options = {
       method: args.method || 'GET',
       headers: {},
@@ -18,8 +18,8 @@ function fetchHelper(url, data, args = {}) {
       options.body = JSON.stringify(data);
     }
     const response = await fetch(url, options).then(res => {
-      if (`${res.status}`[0] !== '2') reject(`${res.status}`);
-      return res.json()
+      if (`${res.status}`[0] !== '2') reject(new Error(`${res.status}`));
+      return res.json();
     });
     resolve(response);
   });
