@@ -22,13 +22,13 @@ editModal.addEventListener('click', e => {
   if (e.target === editModal) editModal.classList.add('hidden');
 });
 
-function refreshEditModal(watch) {
+function refreshEditModal (watch) {
   const fieldNameMappings = {
-    watchName: {name: 'Name'},
-    url: {name: 'URL'},
+    watchName: { name: 'Name' },
+    url: { name: 'URL' },
     // unwantedWords: {name: 'Unwanted Words'},
     // requiredWords: {name: 'Required Words'},
-    creationDate: {name: 'Created', readOnly: true, conversionFunc: getShortDate}
+    creationDate: { name: 'Created', readOnly: true, conversionFunc: getShortDate }
   };
   Array.from(editModalBody.querySelectorAll('.edit-row')).forEach(row => row.remove());
   Object.entries(watch)
@@ -59,15 +59,15 @@ function refreshEditModal(watch) {
       editModalBody.dataset.archived = watch.archived ? 'true' : '';
       archiveButton.textContent = !watch.archived ? 'Archive' : 'Unarchive';
     });
-    const modalInputs = editModalBody.querySelectorAll('input[type="text"]');
-    enterKey(modalInputs, saveButton, updateWatch);
+  const modalInputs = editModalBody.querySelectorAll('input[type="text"]');
+  enterKey(modalInputs, saveButton, updateWatch);
 }
 
 archiveButton.addEventListener('click', e => {
   updateWatch(true);
 });
 
-async function updateWatch(archive = false) {
+async function updateWatch (archive = false) {
   const watchId = editModalBody.dataset.watchId;
   const nameEl = editModalBody.querySelector('[data-key-name="watchName"]');
   const watchName = nameEl.nodeName === 'INPUT' ? nameEl.value : nameEl.textContent;
@@ -84,7 +84,7 @@ async function updateWatch(archive = false) {
   loadingEdit.textContent = archive ? 'Archiving...' : 'Saving...';
   loadingEdit.classList.remove('invisible');
   let error = false;
-  const response = await fetchPost(`./update-watch`, watch)
+  const response = await fetchPost('./update-watch', watch)
     .catch(e => {
       console.error('Failed to update watch', e);
       loadingEdit.textContent = 'Failed to update watch';
@@ -96,23 +96,21 @@ async function updateWatch(archive = false) {
   }
 }
 
-function getShortDate(epoch) {
+function getShortDate (epoch) {
   const timeParts = new Date(epoch).toLocaleTimeString('en-US').split(' ');
   const time = `${timeParts[0].substring(0, timeParts[0].lastIndexOf(':'))} ${timeParts[1]}`;
-  const arr = new Date(epoch).toJSON().slice(0,10).split('-');
+  const arr = new Date(epoch).toJSON().slice(0, 10).split('-');
   const date = [arr[1], arr[2], arr[0]].join('/');
   return `${time} ${date}`;
 }
 
-
-
-async function deleteWatch(watch, rowEl) {
+async function deleteWatch (watch, rowEl) {
   let error = false;
   const body = {
     id: watch.id,
     deleted: true
   };
-  const response = await fetchPost(`./update-watch`, body)
+  const response = await fetchPost('./update-watch', body)
     .catch(e => {
       console.error('Failed to delete watch', e);
       alert('Failed to delete watch');

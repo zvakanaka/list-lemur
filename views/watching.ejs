@@ -2,19 +2,11 @@
 <html>
 <head>
   <title>Watching</title>
-  <% if (process.env.SUB_APP && process.env.OUTER_APP_DIR) {%>
-    <%- include(process.env.OUTER_APP_DIR+'/views/partials/head') %>
-  <% } else { %>
-    <% include partials/head %>
-  <% } %>
+  <%- include('partials/head.ejs') %>
   <link rel="stylesheet" href="css/watching.css">
 </head>
   <body>
-    <% if (process.env.SUB_APP && process.env.OUTER_APP_DIR) {%>
-      <%- include(process.env.OUTER_APP_DIR+'/views/partials/nav') %>
-    <% } else { %>
-      <% include partials/nav %>
-    <% } %>
+    <%- include('partials/nav.ejs') %>
     <main class="cover-all">
       <div class="messages">
         <% if (userWatches.length === 0) {%>
@@ -70,10 +62,6 @@
     <!-- <script src="/js/message.js"></script> -->
     <script src="js/keys.js"></script>
     <script src="js/watching.js"></script>
-    <% if (process.env.SUB_APP && process.env.OUTER_APP_DIR) {%>
-      <%- include(process.env.OUTER_APP_DIR+'/views/partials/footer') %>
-    <% } else { %>
-      <% include partials/footer %>
-    <% } %>
+    <%- include('partials/footer.ejs') %>
   </body>
 </html>

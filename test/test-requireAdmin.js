@@ -3,8 +3,8 @@ var isAdmin = require('../lib/isAdmin.js');
 
 var should = chai.should();
 
-describe('Check if ip from localhost is admin ', function() {
-  it('should return affirmative', function() {
+describe('Check if ip from localhost is admin ', function () {
+  it('should return affirmative', function () {
     let ip = 'localhost';
     let isAnAdmin = isAdmin.check(ip);
     isAnAdmin.should.equal(true);
@@ -23,10 +23,10 @@ describe('Check if ip from localhost is admin ', function() {
   });
 });
 
-describe('Check if ip from external host is admin ', function() {
-  it('should return negatory', function() {
-    let ip = '111.11.1.11';
-    let isAnAdmin = isAdmin.check(ip);
+describe('Check if ip from external host is admin ', function () {
+  it('should return negatory', function () {
+    const ip = '111.11.1.11';
+    const isAnAdmin = isAdmin.check(ip);
     isAnAdmin.should.equal(false);
   });
 });

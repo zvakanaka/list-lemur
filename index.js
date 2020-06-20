@@ -1,12 +1,12 @@
 // TODO: move routes
 require('dotenv').config();
-const express = require ('express');
+const express = require('express');
 const debug = require('debug')('http');
 const path = require('path');
 const middleware = require('./lib/middleware/middleware.js');
 const isAdmin = require('./lib/isAdmin.js');
 const passport = require('passport');
-const config = require('./private-auth.js');
+const config = require('./lib/privateAuth.js');
 const GoogleStrategy = require('passport-google-oauth2').Strategy;
 const cookieParser = require('cookie-parser');
 const fs = require('fs');
@@ -17,24 +17,24 @@ const redirectRoot = process.env.GOOGLE_AUTH_CALLBACK_ROOT ? process.env.GOOGLE_
 /**
  * passport
  */
- // serialize and deserialize
- passport.serializeUser(function(user, done) {
-   done(null, user);
- });
- passport.deserializeUser(function(obj, done) {
-   done(null, obj);
- });
+// serialize and deserialize
+passport.serializeUser(function (user, done) {
+  done(null, user);
+});
+passport.deserializeUser(function (obj, done) {
+  done(null, obj);
+});
 
- passport.use(new GoogleStrategy({
-   clientID: config.google.clientID,
-   clientSecret: config.google.clientSecret,
-   callbackURL: config.google.callbackURL
-   },
-   function(request, accessToken, refreshToken, profile, done) {
-     model.getOrAddUser(profile);
-     done(null, profile);
-   }
- ));
+passport.use(new GoogleStrategy({
+  clientID: config.google.clientID,
+  clientSecret: config.google.clientSecret,
+  callbackURL: config.google.callbackURL
+},
+function (request, accessToken, refreshToken, profile, done) {
+  model.getOrAddUser(profile);
+  done(null, profile);
+}
+));
 
 var app = express();
 var bodyParser = require('body-parser');
@@ -52,16 +52,16 @@ app.use(express.static(path.join(__dirname, 'assets')));
 // app.use('/components', express.static(__dirname + '/components'));
 
 app.use(require('express-session')({
-    secret: 'keyboard cat',
-    resave: false,
-    saveUninitialized: false
+  secret: process.env.SESSION_SECRET,
+  resave: false,
+  saveUninitialized: false
 }));
 app.use(passport.initialize());
 app.use(passport.session());
 
 var PORTNO = process.env.PORT || 5000;
 
-if (process.env.PROTOCOL === 'https' && !process.env.SUB_APP) {
+if (process.env.PROTOCOL === 'https') {
   var https = require('https');
   var expressHttpsOptions = {
     ca: [fs.readFileSync(process.env.PATH_TO_BUNDLE_CERT)],
@@ -69,14 +69,14 @@ if (process.env.PROTOCOL === 'https' && !process.env.SUB_APP) {
     key: fs.readFileSync(process.env.PATH_TO_KEY)
   };
   var server = https.createServer(expressHttpsOptions, app);
-  server.listen(PORTNO, function(){
+  server.listen(PORTNO, function () {
     if (process.env.DOMAIN !== '127.0.0.1' && process.env.DOMAIN !== 'localhost') {
       console.log(`server running at ${process.env.PROTOCOL}://${process.env.DOMAIN}`);
     } else {
       console.log(`server running at ${process.env.PROTOCOL}://${process.env.DOMAIN}:${PORTNO}`);
     }
   });
-} else if (!process.env.SUB_APP) {
+} else {
   app.listen(PORTNO);
   if (process.env.DOMAIN !== '127.0.0.1' && process.env.DOMAIN !== 'localhost') {
     console.log(`server running at ${process.env.PROTOCOL}://${process.env.DOMAIN}`);
@@ -87,31 +87,31 @@ if (process.env.PROTOCOL === 'https' && !process.env.SUB_APP) {
 
 app.use(middleware);
 
-app.get('/watching', whoIsThere, async function(req, res){
+app.get('/watching', whoIsThere, async function (req, res) {
   const userId = model.getUserId(req.user.id);
   const userWatches = modelHelpers.getAllWatchesForUser(userId);
   // modelHelpers.popItems(userId);
   res.render('watching', {
-            page: process.env.SUB_APP ? req.url : req.url, // url
-            user: req.user,
-            userWatches });
+    page: req.url, // url
+    user: req.user,
+    userWatches
+  });
 });
 
-app.post('/update-watch', whoIsThere, async function(req, res) {
+app.post('/update-watch', whoIsThere, async function (req, res) {
   debug('POST /update-watch');
   const userId = model.getUserId(req.user.id);
-  const watch = {...req.body, userId};
+  const watch = { ...req.body, userId };
   try {
     model.updateWatch(watch);
-    res.json({success: 'Watch updated'});
+    res.json({ success: 'Watch updated' });
   } catch (e) {
     console.error(e);
-    res.status(500).json({error: 'Failed to update watch'});
-    return;
+    res.status(500).json({ error: 'Failed to update watch' });
   }
 });
 
-app.get('/watch', requireAdmin, async function(req, res) {
+app.get('/watch', requireAdmin, async function (req, res) {
   debug('GET /watch');
   res.type('json');
   const watches = modelHelpers.getAllActiveWatches();
@@ -123,44 +123,50 @@ app.get('/watch', requireAdmin, async function(req, res) {
   modelHelpers.watch(watches);
 });
 
-app.get('/', function(req, res) {
+app.get('/', function (req, res) {
   debug('GET /');
   if (req.user) res.redirect(`${redirectRoot}/paste-link`);
-  else res.render('login', {
-            page: process.env.SUB_APP ? req.url : req.url, // url
-            user: {displayName:null} });
+  else {
+    res.render('login', {
+      page: req.url, // url
+      user: { displayName: null }
+    });
+  }
 });
 
-app.get('/account', whoIsThere, function(req, res){
+app.get('/account', whoIsThere, function (req, res) {
   res.render('account', {
-            page: process.env.SUB_APP ? req.url : req.url, // url
-            user: req.user });
+    page: req.url, // url
+    user: req.user
+  });
 });
 
-app.get('/paste-link', whoIsThere, async function(req, res){
+app.get('/paste-link', whoIsThere, async function (req, res) {
   const email = model.getVerifiedEmail(model.getUserId(req.user.id));
   if (!email) res.redirect(`${redirectRoot}/settings`);
-  else res.render('paste-link', {
-            page: process.env.SUB_APP ? req.url : req.url, // url
-            user: req.user
-          });
+  else {
+    res.render('paste-link', {
+      page: req.url, // url
+      user: req.user
+    });
+  }
 });
 
-app.get('/settings', whoIsThere, async function(req, res){
+app.get('/settings', whoIsThere, async function (req, res) {
   const email = model.getVerifiedEmail(model.getUserId(req.user.id));
   res.render('settings', {
-            page: process.env.SUB_APP ? req.url : req.url, // url
-            user: req.user,
-            email
-          });
+    page: req.url, // url
+    user: req.user,
+    email
+  });
 });
 
-app.post('/add-link', whoIsThere, async function(req, res) {
+app.post('/add-link', whoIsThere, async function (req, res) {
   debug('POST /add-link');
   const userId = model.getUserId(req.user.id);
   const link = req.body.link;
   if (!modelHelpers.isValidLink(link)) {
-    res.status(400).json({error: 'Invalid link'});
+    res.status(400).json({ error: 'Invalid link' });
     return;
   }
   const stripe = modelHelpers.getStripe(link);
@@ -169,7 +175,7 @@ app.post('/add-link', whoIsThere, async function(req, res) {
       url: link,
       userId
     });
-    res.status(409).json({error: 'Site not yet supported'});
+    res.status(409).json({ error: 'Site not yet supported' });
     return;
   }
   const watchToInsert = {
@@ -184,82 +190,77 @@ app.post('/add-link', whoIsThere, async function(req, res) {
     res.json([]);
     return;
   }
-  const insertedWatch = Object.assign({}, {firstLook: true}, watches[0]);
+  const insertedWatch = Object.assign({}, { firstLook: true }, watches[0]);
   modelHelpers.watch([insertedWatch]);
   const search = { link };
   res.json(search);
 });
 
-app.post('/verify-code', whoIsThere, async function(req, res) {
+app.post('/verify-code', whoIsThere, async function (req, res) {
   debug('POST /verify-code');
   const userId = model.getUserId(req.user.id);
   const code = req.body.code;
   if (!modelHelpers.isValidCode(userId, code)) {
-    res.status(409).json({error: 'Invalid code'});
+    res.status(409).json({ error: 'Invalid code' });
     return;
   }
-  res.json({success: 'Email validated'});
+  res.json({ success: 'Email validated' });
 });
 
-app.post('/send-code', whoIsThere, async function(req, res) {
+app.post('/send-code', whoIsThere, async function (req, res) {
   debug('POST /send-code');
   const userId = model.getUserId(req.user.id);
   const email = req.body.email;
   if (!modelHelpers.isValidEmail(email)) {
-    res.status(400).json({error: 'Invalid email'});
+    res.status(400).json({ error: 'Invalid email' });
     return;
   }
   const codeSent = modelHelpers.sendCode(email, userId);
   if (!codeSent) {
-    res.status(409).json({error: 'User account error'});
+    res.status(409).json({ error: 'User account error' });
     return;
   }
-  res.json({success: true});
+  res.json({ success: true });
 });
 
-app.get('/reset-email', whoIsThere, async function(req, res) {
+app.get('/reset-email', whoIsThere, async function (req, res) {
   debug('GET /reset-email');
   const userId = model.getUserId(req.user.id);
   model.archiveVerifiedEmail(userId);
-  res.json({success: true});
+  res.json({ success: true });
 });
-
-
 
 app.get('/auth/google',
-  passport.authenticate('google', { scope: [
-    'https://www.googleapis.com/auth/plus.login'
-  ] }
-));
+  passport.authenticate('google', {
+    scope: [
+      'https://www.googleapis.com/auth/plus.login'
+    ]
+  }
+  ));
 app.get('/auth/google/callback',
   passport.authenticate('google', { failureRedirect: '/' }),
-  function(req, res) {
+  function (req, res) {
     res.cookie('id', req.user.id, { maxAge: 900000, httpOnly: true });
     res.redirect(`${redirectRoot}/`);
-});
+  });
 
-app.get('/logout', function(req, res){
+app.get('/logout', function (req, res) {
   res.clearCookie('id');
   req.logout();
   res.redirect(`${redirectRoot}/`);
 });
 
 // authentication
-function whoIsThere(req, res, next) {
+function whoIsThere (req, res, next) {
   if (req.isAuthenticated()) { return next(); }
   debug('Not authenticated - redirecting');
   res.redirect(`${redirectRoot}/auth/google`);
 }
 
-function requireAdmin(req, res, next) {
+function requireAdmin (req, res, next) {
   if (isAdmin.check(req.ip)) {
     return next();
   }
   debug(req.ip + 'is not admin - redirecting');
   res.status(403).send('Must be admin');
-}
-
-if (process.env.SUB_APP) {
-  debug('Exporting as sub-app');
-  module.exports = app;
 }

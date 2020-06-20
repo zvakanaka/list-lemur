@@ -2,28 +2,16 @@
 <html>
   <head>
     <title>Login</title>
-    <% if (process.env.SUB_APP && process.env.OUTER_APP_DIR) {%>
-      <%- include(process.env.OUTER_APP_DIR+'/views/partials/head') %>
-    <% } else { %>
-      <% include partials/head %>
-    <% } %>
+    <%- include('partials/head.ejs') %>
     <link rel="stylesheet" href="css/login.css">
   </head>
   <body>
-    <% if (process.env.SUB_APP && process.env.OUTER_APP_DIR) {%>
-      <%- include(process.env.OUTER_APP_DIR+'/views/partials/loginNav') %>
-    <% } else { %>
-      <% include partials/loginNav %>
-    <% } %>
+    <%- include('partials/loginNav.ejs') %>
     <div class="cover-all">
       <a href="auth/google">
         <img class="auth-image" src="images/btn_google_signin.png" alt="Sign in with Google">
       </a>
     </div>
-    <% if (process.env.SUB_APP && process.env.OUTER_APP_DIR) {%>
-      <%- include(process.env.OUTER_APP_DIR+'/views/partials/footer') %>
-    <% } else { %>
-      <% include partials/footer %>
-    <% } %>
+    <%- include('partials/footer.ejs') %>
   </body>
 </html>

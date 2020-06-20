@@ -4,28 +4,28 @@ const look = require('../lib/look.js');
 require('dotenv').config();
 const fs = require('fs');
 
-function readFile(filename) {
+function readFile (filename) {
   try {
     const data = fs.readFileSync(filename, 'utf8');
     return data.toString();
-  } catch(e) {
+  } catch (e) {
     console.error('Error:', e.stack);
   }
 }
 
-describe('Looking at a page', function() {
-  it('should get all of the listings', function(done) {
+describe('Looking at a page', function () {
+  it('should get all of the listings', function (done) {
     const bodyString = readFile('./test/pages/site-list.html');
     const options = {
-      "selectors": {
-        "listing": "li",
-        "title": "a",
-        "link": "a",
-        "description": false,
-        "price": false
+      selectors: {
+        listing: 'li',
+        title: 'a',
+        link: 'a',
+        description: false,
+        price: false
       },
-      "url": "https://localhost:7777/site-list.html",
-      "watchName": "GitHub IO Pages"
+      url: 'https://localhost:7777/site-list.html',
+      watchName: 'GitHub IO Pages'
     };
     look(options, bodyString).then(results => {
       Number(results.listings.length).should.equal(3);
