@@ -91,6 +91,13 @@ app.get('/watching', whoIsThere, async function (req, res) {
   const userId = model.getUserId(req.user.id);
   const userWatches = modelHelpers.getAllWatchesForUser(userId);
   // modelHelpers.popItems(userId);
+  
+  // put archived watches last
+  userWatches.sort((a, b) => {
+    const aSortKey = a.archived ? 1 : 0
+    const bSortKey = b.archived ? 1 : 0
+    return aSortKey - bSortKey
+  })
   res.render('watching', {
     page: req.url, // url
     user: req.user,
