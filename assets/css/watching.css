@@ -61,7 +61,7 @@ body {
 }
 .modal__body {
   height: 80vh;
-  min-width: 350px;
+  min-width: 65vw;
   background: white;
   border-radius: 10px;
   border: 1px solid black;
