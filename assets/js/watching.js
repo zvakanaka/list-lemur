@@ -26,7 +26,7 @@ function refreshEditModal (watch) {
   const fieldNameMappings = {
     watchName: { name: 'Name' },
     url: { name: 'URL' },
-    // unwantedWords: {name: 'Unwanted Words'},
+    unwantedWords: {name: 'Unwanted Words (comma separate)'},
     // requiredWords: {name: 'Required Words'},
     creationDate: { name: 'Created', readOnly: true, conversionFunc: getShortDate }
   };
@@ -72,10 +72,12 @@ async function updateWatch (archive = false) {
   const nameEl = editModalBody.querySelector('[data-key-name="watchName"]');
   const watchName = nameEl.nodeName === 'INPUT' ? nameEl.value : nameEl.textContent;
   const watchUrl = editModalBody.querySelector('[data-key-name="url"]').value;
+  const unwantedWords = editModal.querySelector('[data-key-name="unwantedWords"]').value;
   const watch = {
     id: watchId,
     name: watchName,
     url: watchUrl,
+    unwantedWords: unwantedWords.split(',').map(word => word.trim()).join(','),
     archived: archive ? !editModalBody.dataset.archived : editModalBody.dataset.archived,
     deleted: false
   };
