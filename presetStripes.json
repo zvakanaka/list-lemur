@@ -8,7 +8,7 @@
       "description": false,
       "price": false
     },
-    "javascript": false
+    "javascript": true
   },
   {
     "prefix": "https://www.debian.org/security/dsa",

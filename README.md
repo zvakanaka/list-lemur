@@ -47,3 +47,10 @@ NPM_PATH=/home/pi/.nvm/versions/node/v12.18.0/bin/npm
 # See crontab.guru for help, the sleep adds some randomness
 */30 7-19 * * 1-6 sleep $(( 1$(date +\%N) \% 60 )) && curl -s http://localhost:5555/watch > /dev/null
 ```
+
+# Docker
+`docker build -t zvakanaka/nodejs-list-lemur .`  
+`docker run --env-file .env --name nodejs-list-lemur -p 5555:8080 -d zvakanaka/nodejs-list-lemur`  
+`docker start -a nodejs-list-lemur`  
+`docker kill $(docker ps -lq)`  
+`docker container rm $(docker ps -lq)`
