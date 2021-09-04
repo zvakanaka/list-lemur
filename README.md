@@ -18,6 +18,10 @@ npm install
       "price": false
     },
     "javascript": false
+  },
+  {
+    "prefix": "https://www.debian.org/security/dsa",
+    "rss": true
   }
 ]
 ```
@@ -38,12 +42,8 @@ npm start
 ```sh
 HOME=/home/pi
 
-@reboot vncserver >> $HOME/.vnc_cron_log
-DISPLAY=:1
-
 NPM_PATH=/home/pi/.nvm/versions/node/v12.18.0/bin/npm
 @reboot cd $HOME/list-lemur; $NPM_PATH start >> npm-debug.log
 # See crontab.guru for help, the sleep adds some randomness
 */30 7-19 * * 1-6 sleep $(( 1$(date +\%N) \% 60 )) && curl -s http://localhost:5555/watch > /dev/null
 ```
-(See [here](https://github.com/zvakanaka/body-snatchers/blob/master/raspberry-pi-4-instructions.md) if setting up headless VNC on RPI, which may still be needed for puppeteer)
