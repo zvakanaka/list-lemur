@@ -1,8 +1,4 @@
 Get a text/email when lists on the internet change.
-## Setup
-```sh
-npm install
-```
 
 ### Default 'Stripes' (`presetStripes.json`)
 *a stripe is a pattern that describes how to recognize parts of a list on a website*
@@ -33,17 +29,23 @@ npm install
 
 See [.env.example](./.env.example) for example environment variables.
 
-## Run it
+## Run it (if not using Docker)
 ```sh
 npm start
 ```
 
-## Use a Cron Job to Periodically Watch Sites
-```sh
-HOME=/home/pi
+# Docker
+An official Docker image for this project is in the works (works great so far!), but for now you have to build it yourself:
 
-NPM_PATH=/home/pi/.nvm/versions/node/v12.18.0/bin/npm
-@reboot cd $HOME/list-lemur; $NPM_PATH start >> npm-debug.log
-# See crontab.guru for help, the sleep adds some randomness
-*/30 7-19 * * 1-6 sleep $(( 1$(date +\%N) \% 60 )) && curl -s http://localhost:5555/watch > /dev/null
-```
+Build:  
+`docker build -t [your-docker-hub-username]/list-lemur .`  
+Run (note that the `-v` flag to share files is optional and you can share a custom `presetStripes.json` to support more sites than the example):  
+`docker run -v $(pwd)/db.json:/home/node/app/db.json --env-file .env --name list-lemur -p 5555:8080 -d [your-docker-hub-username]/list-lemur`  
+Start:  
+`docker start -a list-lemur`  
+Kill:  
+`docker kill $(docker ps -lq)`  
+Remove:  
+`docker container rm $(docker ps -lq)`
+
+[Node images for Docker](https://hub.docker.com/_/node/)
