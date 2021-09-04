@@ -16,6 +16,7 @@
     "body-snatchers": "^1.1.0",
     "color-json": "^2.0.1",
     "cookie-parser": "^1.4.5",
+    "cross-env": "^7.0.3",
     "debug": "^4.1.1",
     "dotenv": "^8.2.0",
     "ejs": "^3.1.3",
@@ -28,6 +29,7 @@
     "node-fetch": "^2.6.0",
     "passport": "^0.4.1",
     "passport-google-oauth2": "^0.2.0",
+    "rss-parser": "^3.12.0",
     "sequential-promise-all": "^1.0.2"
   },
   "devDependencies": {
@@ -37,6 +39,8 @@
     "semistandard": "^14.2.0"
   },
   "scripts": {
+    "preinstall": "npm install --no-package-lock cross-env && npm run install:puppeteer",
+    "install:puppeteer": "cross-env PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true npm install body-snatchers",
     "start": "node index.js",
     "lint": "npx semistandard \"**/[!test-]*.js\" --fix",
     "test": "mocha || :",

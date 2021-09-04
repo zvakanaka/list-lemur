@@ -1,0 +1,7 @@
+{
+  "listing": ".listing",
+  "title": ".title",
+  "link": ".link",
+  "description": false,
+  "price": false
+}
