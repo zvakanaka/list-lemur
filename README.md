@@ -1,8 +1,4 @@
 Get a text/email when lists on the internet change.
-## Setup
-```sh
-npm install
-```
 
 ### Default 'Stripes' (`presetStripes.json`)
 *a stripe is a pattern that describes how to recognize parts of a list on a website*
@@ -33,15 +29,23 @@ npm install
 
 See [.env.example](./.env.example) for example environment variables.
 
-## Run it
+## Run it (if not using Docker)
 ```sh
 npm start
 ```
 
 # Docker
-https://hub.docker.com/_/node/
-`docker build -t zvakanaka/nodejs-list-lemur .`  
-`docker run -v $(pwd)/db.json:/home/node/app/db.json --env-file .env --name nodejs-list-lemur -p 5555:8080 -d zvakanaka/nodejs-list-lemur`  
-`docker start -a nodejs-list-lemur`  
+An official Docker image for this project is in the works (works great so far!), but for now you have to build it yourself:
+
+Build:  
+`docker build -t [your-docker-hub-username]/list-lemur .`  
+Run (note that the `-v` flag to share files is optional and you can share a custom `presetStripes.json` to support more sites than the example):  
+`docker run -v $(pwd)/db.json:/home/node/app/db.json --env-file .env --name list-lemur -p 5555:8080 -d [your-docker-hub-username]/list-lemur`  
+Start:  
+`docker start -a list-lemur`  
+Kill:  
 `docker kill $(docker ps -lq)`  
+Remove:  
 `docker container rm $(docker ps -lq)`
+
+[Node images for Docker](https://hub.docker.com/_/node/)
