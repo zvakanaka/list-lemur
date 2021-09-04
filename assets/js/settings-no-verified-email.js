@@ -43,7 +43,7 @@ async function verifyCode () {
       error = true;
     });
   if (!error) {
-    addMessage('Code verified');
+    addMessage('Code verified. Redirecting...');
     const verificationCodeContainer = document.querySelector('.verification-code__container');
     verificationCodeContainer.classList.add('invisible');
     setTimeout(() => {
