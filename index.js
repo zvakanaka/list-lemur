@@ -185,6 +185,11 @@ app.post('/add-link', whoIsThere, async function (req, res) {
     res.status(409).json({ error: 'Site not yet supported' });
     return;
   }
+  const existingWatchesForUser = modelHelpers.getAllWatchesForUser(userId)
+  if (existingWatchesForUser.find(watch => watch.url === link)) {
+    res.status(409).json({ error: 'You are already watching this link' });
+    return;
+  }
   const watchToInsert = {
     url: link,
     stripeId: stripe.id,

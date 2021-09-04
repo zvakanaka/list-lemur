@@ -9,5 +9,9 @@
       "price": false
     },
     "javascript": false
+  },
+  {
+    "prefix": "https://www.debian.org/security/dsa",
+    "rss": true
   }
 ]
