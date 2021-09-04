@@ -2,7 +2,7 @@
   "name": "list-lemur",
   "version": "1.0.0",
   "description": "Receive SMS/emails when a list on a site changes",
-  "main": "index.js",
+  "main": "app.js",
   "engines": {
     "node": ">=10.0.0",
     "npm": ">=6.2.0"
@@ -41,7 +41,7 @@
   "scripts": {
     "preinstall": "npm install --no-package-lock cross-env && npm run install:puppeteer",
     "install:puppeteer": "cross-env PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true npm install body-snatchers",
-    "start": "node index.js",
+    "start": "node app.js",
     "lint": "npx semistandard \"**/[!test-]*.js\" --fix",
     "test": "mocha || :",
     "web-server": "http-server --silent -p 7777 test/pages &",

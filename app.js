@@ -13,6 +13,10 @@ const fs = require('fs');
 const model = require('./lib/db.js');
 const modelHelpers = require('./lib/modelHelpers.js');
 const redirectRoot = process.env.GOOGLE_AUTH_CALLBACK_ROOT ? process.env.GOOGLE_AUTH_CALLBACK_ROOT : '';
+const UTC_OFFSET = process.env.hasOwnProperty('UTC_OFFSET') ? parseInt(process.env.UTC_OFFSET, 10) : -7;
+const WATCH_START_HOUR = process.env.hasOwnProperty('WATCH_START_HOUR') ? parseInt(process.env.WATCH_START_HOUR, 10) : 7;
+const WATCH_LAST_HOUR = process.env.hasOwnProperty('WATCH_LAST_HOUR') ? parseInt(process.env.WATCH_LAST_HOUR, 10) : 20;
+const WATCH_EXCLUDE_DAYS = process.env.hasOwnProperty('WATCH_EXCLUDE_DAYS') ? process.env.WATCH_EXCLUDE_DAYS.split(',').map(dayStr => dayStr.toLowerCase()) : [];
 
 /**
  * passport
@@ -30,10 +34,10 @@ passport.use(new GoogleStrategy({
   clientSecret: config.google.clientSecret,
   callbackURL: config.google.callbackURL
 },
-function (request, accessToken, refreshToken, profile, done) {
-  model.getOrAddUser(profile);
-  done(null, profile);
-}
+  function (request, accessToken, refreshToken, profile, done) {
+    model.getOrAddUser(profile);
+    done(null, profile);
+  }
 ));
 
 var app = express();
@@ -91,7 +95,7 @@ app.get('/watching', whoIsThere, async function (req, res) {
   const userId = model.getUserId(req.user.id);
   const userWatches = modelHelpers.getAllWatchesForUser(userId);
   // modelHelpers.popItems(userId);
-  
+
   // put archived watches last
   userWatches.sort((a, b) => {
     const aSortKey = a.archived ? 1 : 0
@@ -263,16 +267,56 @@ app.get('/logout', function (req, res) {
 });
 
 // authentication
-function whoIsThere (req, res, next) {
+function whoIsThere(req, res, next) {
   if (req.isAuthenticated()) { return next(); }
   debug('Not authenticated - redirecting');
   res.redirect(`${redirectRoot}/auth/google`);
 }
 
-function requireAdmin (req, res, next) {
+function requireAdmin(req, res, next) {
   if (isAdmin.check(req.ip)) {
     return next();
   }
   debug(req.ip + 'is not admin - redirecting');
   res.status(403).send('Must be admin');
 }
+
+function watch() {
+  const watches = modelHelpers.getAllActiveWatches();
+  if (typeof watches === 'undefined' || watches.length === 0) {
+    return;
+  }
+  modelHelpers.watch(watches);
+}
+
+const halfHourInMs = 30 * 60 * 1000;
+setInterval(() => {
+  const date = new Date();
+
+  const dateTime = {
+    date: {
+      month: () => date.getUTCMonth() + 1,
+      day: () => date.getUTCDate()
+    },
+    time: {
+      hour: () => date.getUTCHours(),
+      minute: () => date.getUTCMinutes(),
+      second: () => date.getUTCSeconds(),
+    }
+  }
+  const month = dateTime.date.month();
+  const day = dateTime.date.day();
+  // time of year when clocks go forward
+  const isDaylightSavings = month >= 3 && month <= 11 &&
+    (month != 3 || day >= 13) &&
+    (month != 11 || day < 6);
+
+  const hourOffset = UTC_OFFSET + (isDaylightSavings ? 1 : 0);
+  const hour = dateTime.time.hour();
+  const hereHour = hour < abs(hourOffset) ? hour + 24 + hourOffset : hour + hourOffset;
+  const dayStr = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][date.getDay()]
+  if (hereHour >= WATCH_START_HOUR && hereHour < WATCH_LAST_HOUR && !WATCH_EXCLUDE_DAYS.includes(dayStr.toLocaleLowerCase())) {
+    watch();
+  }
+}, process.env.WATCH_INTERVAL || halfHourInMs);
+watch();
