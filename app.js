@@ -15,7 +15,7 @@ const modelHelpers = require('./lib/modelHelpers.js');
 const redirectRoot = process.env.GOOGLE_AUTH_CALLBACK_ROOT ? process.env.GOOGLE_AUTH_CALLBACK_ROOT : '';
 const UTC_OFFSET = process.env.hasOwnProperty('UTC_OFFSET') ? parseInt(process.env.UTC_OFFSET, 10) : -7;
 const WATCH_START_HOUR = process.env.hasOwnProperty('WATCH_START_HOUR') ? parseInt(process.env.WATCH_START_HOUR, 10) : 7;
-const WATCH_LAST_HOUR = process.env.hasOwnProperty('WATCH_LAST_HOUR') ? parseInt(process.env.WATCH_LAST_HOUR, 10) : 20;
+const WATCH_UNTIL_HOUR = process.env.hasOwnProperty('WATCH_UNTIL_HOUR') ? parseInt(process.env.WATCH_UNTIL_HOUR, 10) : 20;
 const WATCH_EXCLUDE_DAYS = process.env.hasOwnProperty('WATCH_EXCLUDE_DAYS') ? process.env.WATCH_EXCLUDE_DAYS.split(',').map(dayStr => dayStr.toLowerCase()) : [];
 
 /**
@@ -315,7 +315,7 @@ setInterval(() => {
   const hour = dateTime.time.hour();
   const hereHour = hour < abs(hourOffset) ? hour + 24 + hourOffset : hour + hourOffset;
   const dayStr = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][date.getDay()]
-  if (hereHour >= WATCH_START_HOUR && hereHour < WATCH_LAST_HOUR && !WATCH_EXCLUDE_DAYS.includes(dayStr.toLocaleLowerCase())) {
+  if (hereHour >= WATCH_START_HOUR && hereHour < WATCH_UNTIL_HOUR && !WATCH_EXCLUDE_DAYS.includes(dayStr.toLocaleLowerCase())) {
     watch();
   }
 }, process.env.WATCH_INTERVAL || halfHourInMs);
