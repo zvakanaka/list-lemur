@@ -5,6 +5,10 @@ Get a text/email when lists on the internet change.
 
 `docker run -v /path/to/presetStripes.json:/home/node/app/presetStripes.json --env-file /path/to/.env --name list-lemur -p 80:8080 -d zvakanaka/list-lemur`
 
+`docker start -a list-lemur`  
+
+https://user-images.githubusercontent.com/8365885/132111736-3ba6a2c5-fe55-4d71-abfc-0a3c4d6f2da1.mp4
+
 ### Default 'Stripes' (`presetStripes.json`)
 *a stripe is a pattern that describes how to recognize parts of a list on a website*
 ```js
