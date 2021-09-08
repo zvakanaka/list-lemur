@@ -12,6 +12,7 @@ const cookieParser = require('cookie-parser');
 const fs = require('fs');
 const model = require('./lib/db.js');
 const modelHelpers = require('./lib/modelHelpers.js');
+const timeout = (ms) => new Promise((r) => setTimeout(r, ms));
 const redirectRoot = process.env.GOOGLE_AUTH_CALLBACK_ROOT ? process.env.GOOGLE_AUTH_CALLBACK_ROOT : '';
 const UTC_OFFSET = process.env.hasOwnProperty('UTC_OFFSET') ? parseInt(process.env.UTC_OFFSET, 10) : -7;
 const WATCH_START_HOUR = process.env.hasOwnProperty('WATCH_START_HOUR') ? parseInt(process.env.WATCH_START_HOUR, 10) : 7;
@@ -290,7 +291,10 @@ function watch() {
 }
 
 const halfHourInMs = 30 * 60 * 1000;
-setInterval(() => {
+setInterval(async () => {
+  const randomWaitTime = Math.floor(Math.random() * 60 + 1);
+  await timeout(randomWaitTime * 1000);
+
   const date = new Date();
 
   const dateTime = {
@@ -313,10 +317,10 @@ setInterval(() => {
 
   const hourOffset = UTC_OFFSET + (isDaylightSavings ? 1 : 0);
   const hour = dateTime.time.hour();
-  const hereHour = hour < abs(hourOffset) ? hour + 24 + hourOffset : hour + hourOffset;
+  const hereHour = hour < Math.abs(hourOffset) ? hour + 24 + hourOffset : hour + hourOffset;
   const dayStr = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][date.getDay()]
   if (hereHour >= WATCH_START_HOUR && hereHour < WATCH_UNTIL_HOUR && !WATCH_EXCLUDE_DAYS.includes(dayStr.toLocaleLowerCase())) {
     watch();
   }
-}, process.env.WATCH_INTERVAL || halfHourInMs);
+}, process.env.WATCH_INTERVAL * 60 * 1000 || halfHourInMs);
 watch();
