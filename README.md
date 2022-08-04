@@ -10,8 +10,8 @@ Get a text/email when lists on the internet change.
 ![cast](https://user-images.githubusercontent.com/8365885/132111938-183b8a2f-aecd-4836-af03-7205082ddca5.gif)
 
 
-### Default 'Stripes' (`presetStripes.json`)
-*a stripe is a pattern that describes how to recognize parts of a list on a website*
+### Stripes (`presetStripes.json`)
+A stripe is a pattern that describes how to recognize parts of a list on a website.
 ```js
 [
   {
