@@ -46,6 +46,7 @@
     "test": "mocha || :",
     "web-server": "http-server --silent -p 7777 test/pages &",
     "pretest": "npm run web-server",
-    "posttest": "pkill -f http-server"
+    "posttest": "pkill -f http-server",
+    "cleanup": "node cleanup.js"
   }
 }
