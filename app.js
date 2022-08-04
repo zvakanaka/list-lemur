@@ -322,5 +322,5 @@ setInterval(async () => {
   if (hereHour >= WATCH_START_HOUR && hereHour < WATCH_UNTIL_HOUR && !WATCH_EXCLUDE_DAYS.includes(dayStr.toLocaleLowerCase())) {
     watch();
   }
-}, process.env.WATCH_INTERVAL * 60 * 1000 || halfHourInMs);
+}, process.env.WATCH_INTERVAL ? Number(process.env.WATCH_INTERVAL) * 60 * 1000 : halfHourInMs);
 watch();
